@@ -3,7 +3,10 @@ FROM jenkins/jnlp-slave:3.27-1-alpine
 USER root
 ENV KUBERNETES_VERSION=v1.17.3
 
-RUN apk --no-cache add jq shadow py2-pip curl ca-certificates  && \
+
+RUN apk add --no-cache --virtual .build-deps g++ python3-dev libffi-dev openssl-dev jq shadow curl ca-certificates && \
+    apk add --no-cache --update python3 && \
+    pip3 install --upgrade pip setuptools && \
     usermod -G 999 jenkins
 
 #RUN pip --no-cache-dir install docker-compose==${docker_compose_version}
